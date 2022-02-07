@@ -1,5 +1,7 @@
-import { BigNumber, constants } from "ethers";
+import { BigNumber, constants, utils as eUtils } from "ethers";
+export const DEFAULT_BASE_UINT = 18;
 export const ZERO_BN = BigNumber.from("0");
+export const ONE_BN_1e18 = eUtils.parseUnits("1", DEFAULT_BASE_UINT);
 export const ONE_BN = BigNumber.from("1");
 export const TWO_BN = BigNumber.from("2");
 export const FOUR_BN = BigNumber.from("4");

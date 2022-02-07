@@ -25,8 +25,8 @@ export function useTokenAllowance(account, tokenAddress) {
 	const [allowance] =
 		useContractCall(
 			account &&
-				addresses.WETH && {
-					abi: wEthInterface,
+				tokenAddress && {
+					abi: erc20Interface,
 					address: tokenAddress,
 					method: "allowance",
 					args: [account, addresses.Router],

@@ -5,7 +5,8 @@ import { useEthers } from "@usedapp/core/packages/core";
 import { useEffect } from "react";
 import { useState } from "react";
 import {
-	useBuyMinTokensForExactCTokens,
+	useBuyMinimumOutcomeTokensWithFixedAmount,
+	useSellMaxOutcomeTokensForFixedAmount,
 	useSellExactTokensForMinCTokens,
 	useTokenBalance,
 	useCheckTokenApprovals,
@@ -31,6 +32,11 @@ import { BigNumber } from "ethers";
 import TradingInput from "./TradingInput";
 import TradePriceBoxes from "./TradePriceBoxes";
 import ApprovalInterface from "./ApprovalInterface";
+import {
+	useCheckERC1155ApprovalForAll,
+	useCheckTokenApproval,
+} from "../hooks/extras";
+import { addresses } from "../contracts";
 
 function TradingInterface({ market, tradePosition, refreshFn }) {
 	const { account, chainId } = useEthers();
@@ -42,11 +48,14 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 	/**
 	 * Contract calls
 	 */
-	const { state: stateBuy, send: sendBuy } = useBuyMinTokensForExactCTokens();
+	const {
+		state: stateBuy,
+		send: sendBuy,
+	} = useBuyMinimumOutcomeTokensWithFixedAmount();
 	const {
 		state: stateSell,
 		send: sendSell,
-	} = useSellExactTokensForMinCTokens();
+	} = useSellMaxOutcomeTokensForFixedAmount();
 
 	/**
 	 * tabIndex == 0 -> BUY
@@ -85,16 +94,14 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 	const [buyLoading, setBuyLoading] = useState(false);
 	const [sellLoading, setSellLoading] = useState(false);
 
-	const tokenApproval = useCheckTokenApprovals(
-		0,
+	const tokenApproval = useCheckTokenApproval(
+		addresses.USDC,
 		account,
-		undefined,
 		inputBuyAmountBn
 	);
-	const erc1155TokenApproval = useCheckTokenApprovals(
-		1,
-		account,
-		market.oracle.id
+	const erc1155TokenApproval = useCheckERC1155ApprovalForAll(
+		addresses.Group,
+		account
 	);
 
 	useEffect(() => {
