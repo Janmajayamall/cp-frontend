@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router";
 import Feed from "./pages/Feed";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 
 import HeaderWarning from "./components/HeaderWarning";
 import ConnectButton from "./components/ConnectButton";

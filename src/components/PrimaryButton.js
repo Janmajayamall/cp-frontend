@@ -4,19 +4,18 @@ function PrimaryButton({ title, ...children }) {
 	return (
 		<Button
 			{...children}
+			backgroundColor="#0B0B0B"
 			_hover={{
 				border: "1px",
 				borderStyle: "solid",
+				borderColor: "blue.400",
+				backgroundColor: "gray.700",
 			}}
+			border="1px solid transparent"
 			_loading={{
 				color: "#BDBDBD",
 			}}
-			style={{
-				border: "1px",
-				borderStyle: "solid",
-				borderRadius: "10px",
-				backgroundColor: "#0B0B0B",
-			}}
+			borderRadius="md"
 		>
 			<Text color="#FDFDFD">{title}</Text>
 		</Button>
