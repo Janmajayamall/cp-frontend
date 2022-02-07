@@ -1,5 +1,12 @@
-import { BigNumber } from "ethers";
-import { ONE_BN_1e18, ONE_BN, FOUR_BN, TWO_BN, ZERO_BN } from ".";
+import { BigNumber, ethers } from "ethers";
+import {
+	ONE_BN_1e18,
+	ONE_BN,
+	FOUR_BN,
+	TWO_BN,
+	ZERO_BN,
+	DEFAULT_BASE_UINT,
+} from ".";
 
 /**
  * @ref https://github.com/Uniswap/sdk-core/blob/76b41d349ef7f9e0555383b1b11f95872e91e975/src/utils/sqrt.ts#L14
@@ -125,4 +132,42 @@ export function getAmountCOutForToken0(r0, r1, tA, fee) {
 		fee: amountPlusFee.sub(amount),
 		error: false,
 	};
+}
+
+export function minAmountAfterSlippageBn(bnAmount, slippagePercentage) {
+	if (
+		!BigNumber.isBigNumber(bnAmount) ||
+		slippagePercentage <= 0 ||
+		slippagePercentage >= 100
+	) {
+		return bnAmount;
+	}
+
+	return bnAmount.mul(
+		ONE_BN_1e18.sub(
+			ethers.utils.parseUnits(
+				String(slippagePercentage / 100),
+				DEFAULT_BASE_UINT
+			)
+		).div(ONE_BN_1e18)
+	);
+}
+
+export function maxAmountAfterSlippageBn(bnAmount, slippagePercentage) {
+	if (
+		!BigNumber.isBigNumber(bnAmount) ||
+		slippagePercentage <= 0 ||
+		slippagePercentage >= 100
+	) {
+		return bnAmount;
+	}
+
+	return bnAmount.mul(
+		ONE_BN_1e18.sub(
+			ethers.utils.parseUnits(
+				String(slippagePercentage / 100),
+				DEFAULT_BASE_UINT
+			)
+		).div(ONE_BN_1e18)
+	);
 }

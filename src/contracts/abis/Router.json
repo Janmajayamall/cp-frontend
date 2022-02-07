@@ -126,6 +126,40 @@
 	},
 	{
 		"type": "function",
+		"name": "sellFixedOutcomeTokensForMinAmount",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenIn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "minAmountOut",
+				"type": "uint256"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "function",
 		"name": "sellMaxOutcomeTokensForFixedAmount",
 		"inputs": [
 			{

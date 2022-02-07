@@ -26,6 +26,14 @@ export function useSellMaxOutcomeTokensForFixedAmount() {
 	return { state, send };
 }
 
+export function useSellFixedOutcomeTokensForMinAmount() {
+	const { state, send } = useContractFunction(
+		routerContract,
+		"sellFixedOutcomeTokensForMinAmount"
+	);
+	return { state, send };
+}
+
 export function useRedeem() {
 	const { state, send } = useContractFunction(routerContract, "redeem");
 	return { state, send };

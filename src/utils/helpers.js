@@ -126,21 +126,3 @@ export function toBase64(file) {
 		reader.onerror = (error) => reject(error);
 	});
 }
-
-export function minAmountAfterSlippageBn(bnAmount, slippagePercentage) {
-	if (
-		!BigNumber.isBigNumber(bnAmount) ||
-		slippagePercentage <= 0 ||
-		slippagePercentage >= 100
-	) {
-		return bnAmount;
-	}
-
-	let remainingValuePer = BigNumber.from(
-		(1 - Number(slippagePercentage / 100)) * 10000
-	);
-	let minValueBn = bnAmount
-		.mul(remainingValuePer)
-		.div(BigNumber.from("10000"));
-	return minValueBn;
-}

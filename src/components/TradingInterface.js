@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import {
 	useBuyMinimumOutcomeTokensWithFixedAmount,
-	useSellMaxOutcomeTokensForFixedAmount,
+	useSellFixedOutcomeTokensForMinAmount,
 	useSellExactTokensForMinCTokens,
 	useTokenBalance,
 	useCheckTokenApprovals,
@@ -25,6 +25,8 @@ import {
 	ZERO_BN,
 	ARB_RINKEBY_CHAIN_ID,
 	formatDecimalToPercentage,
+	getAmountCOutForToken0,
+	getToken0OutForAmountC,
 } from "../utils";
 import TwoColTitleInfo from "../components/TwoColTitleInfo";
 import PrimaryButton from "./PrimaryButton";
@@ -43,7 +45,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 	const isAuthenticated =
 		account && chainId && chainId == ARB_RINKEBY_CHAIN_ID ? true : false;
 	const toast = useToast();
-	const wEthTokenBalance = useTokenBalance(account);
+	const usdcTokenBalance = useTokenBalance(account, addresses.USDC);
 
 	/**
 	 * Contract calls
@@ -55,7 +57,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 	const {
 		state: stateSell,
 		send: sendSell,
-	} = useSellMaxOutcomeTokensForFixedAmount();
+	} = useSellFixedOutcomeTokensForMinAmount();
 
 	/**
 	 * tabIndex == 0 -> BUY
@@ -88,6 +90,8 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 	} = useBNInput(sellValidationFn);
 	const [amountCOutBn, setAmountCOutBn] = useState(BigNumber.from(0));
 
+	const [feeBn, setFeeBn] = useState(BigNumber.from(0));
+
 	const [slippage, setSlippage] = useState(0.5);
 
 	// tx loading
@@ -114,11 +118,15 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 			return;
 		}
 
-		let { amount, err } = getTokenAmountToBuyWithAmountC(
-			market.outcomeReserve0,
-			market.outcomeReserve1,
+		let { amount, fee, err } = getToken0OutForAmountC(
+			tokenActionIndex == 0
+				? market.outcomeReserve0
+				: market.outcomeReserve1,
+			tokenActionIndex == 0
+				? market.outcomeReserve1
+				: market.outcomeReserve0,
 			inputBuyAmountBn,
-			tokenActionIndex
+			market.fee
 		);
 
 		if (err === true) {
@@ -127,6 +135,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 		}
 
 		setTokenOutAmountBn(amount);
+		setFeeBn(fee);
 	}, [inputBuyAmountBn, tokenActionIndex]);
 
 	useEffect(() => {
@@ -139,11 +148,15 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 			return;
 		}
 
-		let { amount, err } = getAmountCBySellTokenAmount(
-			market.outcomeReserve0,
-			market.outcomeReserve1,
+		let { amount, fee, err } = getAmountCOutForToken0(
+			tokenActionIndex == 0
+				? market.outcomeReserve0
+				: market.outcomeReserve1,
+			tokenActionIndex == 0
+				? market.outcomeReserve1
+				: market.outcomeReserve0,
 			inputSellAmountBn,
-			tokenActionIndex
+			market.fee
 		);
 
 		if (err) {
@@ -152,6 +165,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 		}
 
 		setAmountCOutBn(amount);
+		setFeeBn(fee);
 	}, [inputSellAmountBn, tokenActionIndex]);
 
 	// tx state handle
@@ -190,7 +204,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 	}
 
 	function buyValidationFn(bnValue) {
-		if (wEthTokenBalance == undefined || bnValue.lte(wEthTokenBalance)) {
+		if (usdcTokenBalance == undefined || bnValue.lte(usdcTokenBalance)) {
 			return { valid: true, expStr: "" };
 		}
 		return {
@@ -300,6 +314,9 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 						info={formatBNToDecimal(tokenOutAmountBn)}
 						helpText="Number of shares you will receive based on the WETH amount you've entered"
 					/>
+					{/**
+					 * Note add fee
+					 */}
 					<TwoColTitleInfo
 						title="Avg. Price per share"
 						info={getDecStrAvgPriceBN(
@@ -347,22 +364,12 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 
 							setBuyLoading(true);
 
-							let a0 =
-								tokenActionIndex == 0
-									? tokenOutAmountBnAfterSlippage
-									: BigNumber.from(0);
-							let a1 =
-								tokenActionIndex == 1
-									? tokenOutAmountBnAfterSlippage
-									: BigNumber.from(0);
-
 							sendBuy(
-								a0,
-								a1,
-								inputBuyAmountBn,
-								1 - tokenActionIndex,
-								market.oracle.id,
-								market.marketIdentifier
+								addresses.Group,
+								market.marketIdentifier,
+								tokenOutAmountBnAfterSlippage,
+								tokenActionIndex,
+								inputBuyAmountBn
 							);
 						}}
 						title={"Buy"}
@@ -446,28 +453,6 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 						)}
 						helpText={`Amount in ${CURR_SYMBOL} you receive per share`}
 					/>
-					<TwoColTitleInfo
-						title="New YES(%) Prob."
-						info={
-							updatedProbabilityObj != undefined
-								? formatDecimalToPercentage(
-										updatedProbabilityObj.p1
-								  )
-								: "N/A"
-						}
-						helpText="Shows how the shares you're selling will impact the YES outcome probability."
-					/>
-					<TwoColTitleInfo
-						title="New NO(%) Prob."
-						info={
-							updatedProbabilityObj != undefined
-								? formatDecimalToPercentage(
-										updatedProbabilityObj.p0
-								  )
-								: "N/A"
-						}
-						helpText="Shows how the shares you're selling will impact the NO outcome probability."
-					/>
 
 					<PrimaryButton
 						disabled={
@@ -500,21 +485,12 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 
 							setSellLoading(true);
 
-							let a0 =
-								tokenActionIndex == 0
-									? inputSellAmountBn
-									: BigNumber.from(0);
-							let a1 =
-								tokenActionIndex == 1
-									? inputSellAmountBn
-									: BigNumber.from(0);
-
 							sendSell(
-								a0,
-								a1,
-								amountCOutAfterSlippageBn,
-								market.oracle.id,
-								market.marketIdentifier
+								addresses.Group,
+								market.marketIdentifier,
+								inputSellAmountBn,
+								tokenActionIndex,
+								amountCOutAfterSlippageBn
 							);
 						}}
 						isLoading={sellLoading}
