@@ -1,6 +1,7 @@
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router";
 import Feed from "./pages/Feed";
+import Market from "./pages/Market";
 import { Flex, Spacer } from "@chakra-ui/react";
 
 import HeaderWarning from "./components/HeaderWarning";
@@ -38,6 +39,7 @@ function App() {
 			</Flex>
 			<Routes>
 				<Route path="/" element={<Feed />} />
+				<Route path="/n" element={<Market />} />
 			</Routes>
 		</div>
 	);

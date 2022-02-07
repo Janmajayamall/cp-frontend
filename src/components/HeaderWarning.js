@@ -1,13 +1,13 @@
 import { Text, Flex, Spacer } from "@chakra-ui/react";
-
+import { useEthers } from "@usedapp/core/packages/core";
 import { useState } from "react";
 import { CloseIcon } from "@chakra-ui/icons";
 function Component() {
-	// const { chainId } = useEthers();
+	const { chainId } = useEthers();
 
 	const [close, setClose] = useState(false);
 
-	if (0 != 421611 && !close) {
+	if (chainId != 421611 && !close) {
 		return (
 			<Flex alignItems="center" bg="red.200" paddingRight={1}>
 				<Spacer />

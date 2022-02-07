@@ -20,14 +20,15 @@ function ConnectButton() {
 		}
 	}, [window.ethereum]);
 
-	useEffect(() => {
+	useEffect(async () => {
 		if (window.ethereum) {
-			window.ethereum.on("chainChanged", (id) => {
-				setChainId(parseInt(id, 16));
+			const id = await window.ethereum.request({
+				method: "eth_chainId",
 			});
+			setChainId(parseInt(id, 16));
 		}
 	}, []);
-
+	console.log(chainId);
 	return (
 		<Flex m={2}>
 			{chainId !== 421611 && account ? (

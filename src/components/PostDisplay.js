@@ -21,10 +21,11 @@ function PostDisplay() {
 				<Prices title={"Long"} price="12" />
 				<Prices title={"Short"} price="12" />
 				<Spacer />
-				<Flex>
-					<PrimaryButton title={"Trade"} />
-					<Spacer />
-				</Flex>
+				<Prices title={"Volume"} price="12" />
+			</Flex>
+			<Flex>
+				<PrimaryButton title={"Trade"} />
+				<Spacer />
 			</Flex>
 		</Flex>
 	);

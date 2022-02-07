@@ -16,12 +16,7 @@ import PostDisplay from "../components/PostDisplay";
 
 function Page() {
 	return (
-		<Flex
-			style={{
-				paddingRight: 20,
-				paddingLeft: 20,
-			}}
-		>
+		<Flex>
 			<Spacer />
 			<Flex width={"30%"}>
 				<Text>Dropdown</Text>
@@ -29,7 +24,7 @@ function Page() {
 
 			<Flex
 				flexDirection="column"
-				width={"50%"}
+				width={"70%"}
 				minHeight="100vh"
 				paddingRight={21}
 				paddingLeft={21}
@@ -51,7 +46,6 @@ function Page() {
 
 				{/* {loadingMarkets == true ? <Loader /> : undefined} */}
 			</Flex>
-			<Spacer />
 		</Flex>
 	);
 }

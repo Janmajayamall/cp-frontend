@@ -1,0 +1,171 @@
+[
+	{
+		"type": "function",
+		"name": "addLiquidity",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "function",
+		"name": "buyMinOutcomeTokensWithFixedAmount",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "minTokenOut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "function",
+		"name": "merge",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "function",
+		"name": "redeem",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenIndex",
+				"type": "uint256"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "function",
+		"name": "removeLiquidityAndMerge",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "byAmount",
+				"type": "uint256"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "function",
+		"name": "sellMaxOutcomeTokensForFixedAmount",
+		"inputs": [
+			{
+				"internalType": "contract Group",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxTokenIn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountOut",
+				"type": "uint256"
+			}
+		],
+		"outputs": [],
+		"constant": null,
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "error",
+		"name": "InvalidTokenIndex",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "TradeConditionViolated",
+		"inputs": []
+	}
+]
