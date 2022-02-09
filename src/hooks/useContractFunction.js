@@ -8,7 +8,6 @@ import {
 	wEthContract,
 	usdcContract,
 } from "../utils";
-import Web3 from "web3";
 
 export function useBuyMinimumOutcomeTokensWithFixedAmount() {
 	const { state, send } = useContractFunction(

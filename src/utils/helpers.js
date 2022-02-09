@@ -3,6 +3,24 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { CURR_SYMBOL, MULTIPLIER_BASE, MULTIPLIER, ZERO_BN, TWO_BN } from ".";
 
+export function filterMarketIdentifiersFromMarkets(markets) {
+	return markets.map((market) => {
+		return market.marketIdentfier;
+	});
+}
+
+export function populateMarketWithMetadata(rawMarket, marketMetadata) {
+	return {
+		...rawMarket,
+		fee: parseDecimalToBN(rawMarket.fee),
+		reserve0: parseDecimalToBN(rawMarket.reserve0),
+		reserve1: parseDecimalToBN(rawMarket.reserve1),
+		liquiditySupply: parseDecimalToBN(rawMarket.liquiditySupply),
+		tradeVolume: parseDecimalToBN(rawMarket.tradeVolume),
+		marketMetadata,
+	};
+}
+
 export function roundDecimalStr(value, dp = 6) {
 	let _value = value;
 	try {

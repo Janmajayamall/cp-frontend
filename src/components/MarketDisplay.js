@@ -1,7 +1,7 @@
 import { Flex, Spacer, Button, Text } from "@chakra-ui/react";
 import PrimaryButton from "./PrimaryButton";
 
-function PostDisplay() {
+function MarketDisplay() {
 	function Prices({ title, price }) {
 		// return (
 		// 	<Flex flexDirection={"column"}>
@@ -31,4 +31,4 @@ function PostDisplay() {
 	);
 }
 
-export default PostDisplay;
+export default MarketDisplay;
