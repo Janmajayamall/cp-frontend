@@ -4,6 +4,7 @@ import Feed from "./pages/Feed";
 import Post from "./pages/Post";
 import Market from "./pages/Market";
 import { Flex, Spacer, Select } from "@chakra-ui/react";
+import { initializeApp } from "firebase/app";
 
 import HeaderWarning from "./components/HeaderWarning";
 import ConnectButton from "./components/ConnectButton";
