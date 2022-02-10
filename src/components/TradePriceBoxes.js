@@ -1,5 +1,5 @@
 import { Button, Box, Text, Flex, Spacer, Icon } from "@chakra-ui/react";
-import { formatBNToDecimal, formatDecimalToCurr } from "../utils";
+import { formatBNToDecimal, formatDecimalToCurr, TWO_BN } from "../utils";
 import InfoTip from "./InfoTip";
 
 function TradePricesBoxes({
@@ -65,9 +65,7 @@ function TradePricesBoxes({
 							fontWeight: "bold",
 						}}
 					>{`${formatDecimalToCurr(
-						outcome === 1
-							? market.probability1
-							: market.probability0
+						outcome === 1 ? "0.89" : "0.11"
 					)}`}</Text>
 				</Flex>
 				<Flex alignItems={"center"}>
@@ -106,9 +104,7 @@ function TradePricesBoxes({
 						}}
 					>
 						{`${formatBNToDecimal(
-							outcome === 1
-								? tradePosition.amount1
-								: tradePosition.amount0
+							outcome === 1 ? TWO_BN : TWO_BN
 						)} Shares`}
 					</Text>
 				</Flex>

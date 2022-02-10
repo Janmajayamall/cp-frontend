@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { selectUserProfile } from "../redux/reducers";
 import { Button, Text, Flex, useToast, UnorderedList } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core/packages/core";
 import { useEffect } from "react";
@@ -310,7 +308,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 						helpText="Outcome share that you are buying"
 					/>
 					<TwoColTitleInfo
-						title="Estimated shares bought"
+						title="Shares bought"
 						info={formatBNToDecimal(tokenOutAmountBn)}
 						helpText="Number of shares you will receive based on the WETH amount you've entered"
 					/>
@@ -326,7 +324,14 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 						helpText={`Price per outcome share in ${CURR_SYMBOL}`}
 					/>
 					<TwoColTitleInfo
-						title="Max. potential profit"
+						title="Max. Profit"
+						info={formatBNToDecimalCurr(
+							tokenOutAmountBn.sub(inputBuyAmountBn)
+						)}
+						helpText="Maximum WETH you could win, if your prediction is correct"
+					/>
+					<TwoColTitleInfo
+						title="Change in YES%"
 						info={formatBNToDecimalCurr(
 							tokenOutAmountBn.sub(inputBuyAmountBn)
 						)}
@@ -501,7 +506,7 @@ function TradingInterface({ market, tradePosition, refreshFn }) {
 					<ApprovalInterface
 						marginTop={10}
 						tokenType={1}
-						erc1155Address={market.oracle.id}
+						erc1155Address={addresses.Group}
 						onSuccess={() => {
 							toast({
 								title: "Success!",

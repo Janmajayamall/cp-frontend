@@ -1,8 +1,9 @@
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router";
 import Feed from "./pages/Feed";
+import Post from "./pages/Post";
 import Market from "./pages/Market";
-import { Flex, Spacer } from "@chakra-ui/react";
+import { Flex, Spacer, Select } from "@chakra-ui/react";
 
 import HeaderWarning from "./components/HeaderWarning";
 import ConnectButton from "./components/ConnectButton";
@@ -32,6 +33,12 @@ function App() {
 						}}
 					>
 						<Spacer />
+						<Select width={"30%"} placeholder="Select Group">
+							<option value="option1">Option 1</option>
+							<option value="option2">Option 2</option>
+							<option value="option3">Option 3</option>
+						</Select>
+						<Spacer />
 						<ConnectButton />
 						{/* <MainMenu /> */}
 					</Flex>
@@ -39,6 +46,8 @@ function App() {
 			</Flex>
 			<Routes>
 				<Route path="/" element={<Feed />} />
+				<Route path="/group/:groupId" element={<Feed />} />
+				<Route path="/post/:postId" element={<Post />} />
 				<Route path="/n" element={<Market />} />
 			</Routes>
 		</div>
